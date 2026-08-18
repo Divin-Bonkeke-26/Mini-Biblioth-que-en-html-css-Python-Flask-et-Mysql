@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Petite Bibliothèque</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css.css') }}">
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-top">
+        <div class="brand">
+            <span class="brand-mark">📚</span>
+            <div>
+                <p class="brand-name">Ma Petite Bibliothèque</p>
+                <p class="brand-subtitle">Catalogue de lecture</p>
+            </div>
+        </div>
+
+        <div class="admin">
+            <p>Bonjour, {{ user.username }}</p>
+        </div>
+
+        <nav class="menu">
+            <a href="{{ url_for('liste_livre') }}" class="active">Accueil</a>
+            <a href="{{ url_for('login_user') }}">Connexion</a>
+        </nav>
+    </div>
+
+    <div class="sidebar-foot">
+        <form method="post" action="{{ url_for('logout') }}">
+            <button class="logout-btn" type="submit">Quitter</button>
+        </form>
+    </div>
+</aside>
+
+<main class="content">
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">Espace personnel</p>
+            <h1>Mini bibliothèque informatique</h1>
+            <p class="page-description">Retrouvez vos livres, ouvrez-les en PDF et gardez votre collection organisée.</p>
+        </div>
+        <div class="header-action">
+            <span>Bienvenue dans votre espace</span>
+        </div>
+    </header>
+
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+
+    <section class="stats-grid">
+        <article class="card stat-card">
+            <p class="stat-label">Total des livres</p>
+            <h2 class="stat-value">{{ total }}</h2>
+        </article>
+    </section>
+
+    <section class="table-card">
+        <div class="table-card__header">
+            <h2>Liste des livres</h2>
+        </div>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Auteur</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if livres %}
+                        {% for livre in livres %}
+                        <tr>
+                            <td>{{ livre.id_livre }}</td>
+                            <td>{{ livre.auteur }}</td>
+                            <td>{{ livre.titre }}</td>
+                            <td>{{ livre.description }}</td>
+                            <td><a class="link-button" href="{{ livre.pdf_url }}" target="_blank" rel="noopener noreferrer">Lire</a></td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun livre trouvé.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
